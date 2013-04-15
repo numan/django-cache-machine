@@ -5,7 +5,6 @@ import logging
 from django.core.cache import cache
 from django.db import models
 from django.db.models.query import EmptyQuerySet
-from django.db.models.sql.constants import TABLE_NAME
 from django.db.models import signals
 from django.utils import encoding
 
@@ -250,7 +249,7 @@ class CacheMachine(object):
         for field, model in opts.get_fields_with_model():
             try:
                 alias = self.query.included_inherited_models[model]
-                table = self.query.alias_map[alias][models.sql.constants.TABLE_NAME]
+                table = self.query.alias_map[alias].table_name
             except KeyError:
                 continue
             if table in only_load and field.column not in only_load[table]:
@@ -338,7 +337,7 @@ class CacheMachine(object):
         Get the table name from its alias string in a Constraint or WhereNode.
         """
         try:
-            return self.query.alias_map[alias][TABLE_NAME]
+            return self.query.alias_map[alias].table_name
         except IndexError:
             return alias
     
