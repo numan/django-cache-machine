@@ -634,7 +634,7 @@ def cached(function, key_, duration=None):
         if CACHE_DEBUG:
             log.debug('cache miss for %s' % key)
         val = function()
-        cache.setex(key, val, duration)
+        cache.set(key, val, duration)
     elif CACHE_DEBUG:
         log.debug('cache hit for %s' % key)
     return val
