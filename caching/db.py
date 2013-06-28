@@ -499,6 +499,9 @@ class CachingQuerySet(models.query.QuerySet):
         sql, params = self.query.get_compiler(using=self.db).as_sql()
         return sql % params
 
+    def query_key(self):
+        return self.query_string()
+
     def iterator(self, skip_cache=False):
         if self._result_cache is not None:
             return iter(self.queryset._result_cache)
